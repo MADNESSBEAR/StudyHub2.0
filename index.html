@@ -1,0 +1,1759 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>StudyHub - Gestão de Estudos</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #4361ee;
+            --secondary: #3a0ca3;
+            --success: #4cc9f0;
+            --info: #7209b7;
+            --warning: #f72585;
+            --light: #f8f9fa;
+            --dark: #212529;
+            --gray: #6c757d;
+            --bg-light: #f0f2f5;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+        
+        body {
+            background-color: var(--bg-light);
+            color: var(--dark);
+            min-height: 100vh;
+        }
+        
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 15px;
+        }
+        
+        /* Header */
+        header {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            padding: 1rem 0;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+        
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 1.5rem;
+            font-weight: 600;
+        }
+        
+        .logo i {
+            font-size: 1.8rem;
+        }
+        
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 1.5rem;
+        }
+        
+        nav a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            transition: opacity 0.3s;
+        }
+        
+        nav a:hover {
+            opacity: 0.8;
+        }
+        
+        .auth-buttons {
+            display: flex;
+            gap: 1rem;
+        }
+        
+        .btn {
+            padding: 0.5rem 1.5rem;
+            border-radius: 50px;
+            border: none;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .btn-outline {
+            background: transparent;
+            border: 2px solid white;
+            color: white;
+        }
+        
+        .btn-primary {
+            background: var(--success);
+            color: white;
+        }
+        
+        .btn-secondary {
+            background: var(--secondary);
+            color: white;
+        }
+        
+        .btn-warning {
+            background: var(--warning);
+            color: white;
+        }
+        
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        
+        /* Hero Section */
+        .hero {
+            padding: 4rem 0;
+            text-align: center;
+            background: white;
+            border-radius: 0 0 20px 20px;
+            margin-bottom: 2rem;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+        }
+        
+        .hero h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            color: var(--primary);
+        }
+        
+        .hero p {
+            font-size: 1.2rem;
+            color: var(--gray);
+            max-width: 700px;
+            margin: 0 auto 2rem;
+        }
+        
+        /* Features */
+        .features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin: 3rem 0;
+        }
+        
+        .feature-card {
+            background: white;
+            padding: 2rem;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            transition: transform 0.3s;
+        }
+        
+        .feature-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .feature-icon {
+            background: var(--primary);
+            color: white;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .feature-card h3 {
+            margin-bottom: 1rem;
+            color: var(--secondary);
+        }
+        
+        /* Dashboard */
+        .dashboard {
+            display: none;
+            padding: 2rem 0;
+        }
+        
+        .dashboard-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+        
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        
+        .stat-card {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+        
+        .stat-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            color: white;
+        }
+        
+        .stat-icon.students {
+            background: var(--primary);
+        }
+        
+        .stat-icon.teachers {
+            background: var(--info);
+        }
+        
+        .stat-icon.subjects {
+            background: var(--success);
+        }
+        
+        .stat-icon.grades {
+            background: var(--warning);
+        }
+        
+        .stat-info h3 {
+            font-size: 1.8rem;
+            margin-bottom: 0.2rem;
+        }
+        
+        .stat-info p {
+            color: var(--gray);
+        }
+        
+        /* Forms */
+        .form-section {
+            background: white;
+            padding: 2rem;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            margin-bottom: 2rem;
+        }
+        
+        .form-section h2 {
+            margin-bottom: 1.5rem;
+            color: var(--secondary);
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid var(--light);
+        }
+        
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+        }
+        
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+        }
+        
+        .form-group input, .form-group select, .form-group textarea {
+            width: 100%;
+            padding: 0.8rem 1rem;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 1rem;
+        }
+        
+        .form-group input:focus, .form-group select:focus, .form-group textarea:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.2);
+        }
+        
+        /* Tables */
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1.5rem 0;
+        }
+        
+        .data-table th, .data-table td {
+            padding: 1rem;
+            text-align: left;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .data-table th {
+            background-color: var(--light);
+            font-weight: 600;
+        }
+        
+        .data-table tr:hover {
+            background-color: #f9f9f9;
+        }
+        
+        .action-buttons {
+            display: flex;
+            gap: 0.5rem;
+        }
+        
+        .action-btn {
+            padding: 0.3rem 0.6rem;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 0.9rem;
+        }
+        
+        .edit-btn {
+            background: var(--success);
+            color: white;
+        }
+        
+        .delete-btn {
+            background: var(--warning);
+            color: white;
+        }
+        
+        /* Login Form */
+        .login-container {
+            max-width: 400px;
+            margin: 3rem auto;
+            padding: 2rem;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+        }
+        
+        .login-container h2 {
+            text-align: center;
+            margin-bottom: 1.5rem;
+            color: var(--primary);
+        }
+        
+        /* Access Control */
+        .access-denied {
+            text-align: center;
+            padding: 3rem;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            margin: 2rem 0;
+        }
+        
+        .access-denied i {
+            font-size: 4rem;
+            color: var(--warning);
+            margin-bottom: 1.5rem;
+        }
+        
+        .access-denied h2 {
+            margin-bottom: 1rem;
+            color: var(--dark);
+        }
+        
+        /* Tabs */
+        .tabs {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+            border-bottom: 2px solid #eee;
+            padding-bottom: 1rem;
+        }
+        
+        .tab-btn {
+            padding: 0.7rem 1.5rem;
+            background: #f0f0f0;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.3s;
+        }
+        
+        .tab-btn.active {
+            background: var(--primary);
+            color: white;
+        }
+        
+        .tab-content {
+            display: none;
+        }
+        
+        .tab-content.active {
+            display: block;
+        }
+        
+        /* Footer */
+        footer {
+            background: var(--dark);
+            color: white;
+            padding: 2rem 0;
+            margin-top: 3rem;
+        }
+        
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+        }
+        
+        .footer-section h3 {
+            margin-bottom: 1rem;
+            font-size: 1.2rem;
+        }
+        
+        .footer-section p, .footer-section a {
+            color: #ccc;
+            margin-bottom: 0.5rem;
+            display: block;
+            text-decoration: none;
+        }
+        
+        .footer-section a:hover {
+            color: white;
+        }
+        
+        .copyright {
+            text-align: center;
+            padding-top: 2rem;
+            margin-top: 2rem;
+            border-top: 1px solid #444;
+            color: #aaa;
+        }
+        
+        /* Responsividade */
+        @media (max-width: 768px) {
+            .header-content {
+                flex-direction: column;
+                gap: 1rem;
+            }
+            
+            nav ul {
+                gap: 1rem;
+            }
+            
+            .hero h1 {
+                font-size: 2rem;
+            }
+            
+            .hero p {
+                font-size: 1rem;
+            }
+            
+            .dashboard-header {
+                flex-direction: column;
+                gap: 1rem;
+                align-items: flex-start;
+            }
+            
+            .tabs {
+                flex-wrap: wrap;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container header-content">
+            <div class="logo">
+                <i class="fas fa-graduation-cap"></i>
+                <span>StudyHub</span>
+            </div>
+            <nav id="main-nav">
+                <ul>
+                    <li><a href="#" class="nav-link" data-page="home">Início</a></li>
+                    <li><a href="#" class="nav-link" data-page="features">Funcionalidades</a></li>
+                    <li><a href="#" class="nav-link" data-page="about">Sobre</a></li>
+                    <li><a href="#" class="nav-link" data-page="contact">Contato</a></li>
+                </ul>
+            </nav>
+            <div class="auth-buttons" id="auth-buttons">
+                <button class="btn btn-outline" onclick="showLogin()">Login</button>
+                <button class="btn btn-primary" onclick="showRegister()">Registrar</button>
+            </div>
+            <div id="user-menu" style="display: none;">
+                <span id="user-name" style="color: white; margin-right: 1rem;"></span>
+                <button class="btn btn-outline" onclick="logout()">
+                    <i class="fas fa-sign-out-alt"></i> Sair
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <main class="container">
+        <!-- Página Inicial -->
+        <section id="home-page">
+            <section class="hero">
+                <h1>Sistema Completo de Gestão de Estudos</h1>
+                <p>Gerencie alunos, professores, matérias e notas em uma plataforma moderna e intuitiva.</p>
+                <button class="btn btn-primary" onclick="showDashboard()">Acessar Dashboard</button>
+            </section>
+
+            <section class="features">
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-user-graduate"></i>
+                    </div>
+                    <h3>Gestão de Alunos</h3>
+                    <p>Cadastre e gerencie informações dos alunos de forma organizada e eficiente.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-chalkboard-teacher"></i>
+                    </div>
+                    <h3>Controle de Professores</h3>
+                    <p>Administre o corpo docente e suas respectivas disciplinas.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-book"></i>
+                    </div>
+                    <h3>Matérias e Disciplinas</h3>
+                    <p>Organize as matérias oferecidas e suas estruturas curriculares.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-chart-line"></i>
+                    </div>
+                    <h3>Sistema de Notas</h3>
+                    <p>Registre e acompanhe o desempenho dos alunos com relatórios detalhados.</p>
+                </div>
+            </section>
+        </section>
+
+        <!-- Dashboard (inicialmente oculto) -->
+        <section class="dashboard" id="dashboard">
+            <div class="dashboard-header">
+                <h2>Dashboard de Administração</h2>
+                <div>
+                    <button class="btn btn-primary" onclick="showAddForm('student')">
+                        <i class="fas fa-plus"></i> Novo Aluno
+                    </button>
+                    <button class="btn btn-secondary" onclick="showAddForm('teacher')" style="margin-left: 10px;">
+                        <i class="fas fa-plus"></i> Novo Professor
+                    </button>
+                    <button class="btn btn-warning" onclick="showAddForm('subject')" style="margin-left: 10px;">
+                        <i class="fas fa-plus"></i> Nova Matéria
+                    </button>
+                </div>
+            </div>
+
+            <div class="stats">
+                <div class="stat-card">
+                    <div class="stat-icon students">
+                        <i class="fas fa-user-graduate"></i>
+                    </div>
+                    <div class="stat-info">
+                        <h3 id="total-students">0</h3>
+                        <p>Alunos</p>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon teachers">
+                        <i class="fas fa-chalkboard-teacher"></i>
+                    </div>
+                    <div class="stat-info">
+                        <h3 id="total-teachers">0</h3>
+                        <p>Professores</p>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon subjects">
+                        <i class="fas fa-book"></i>
+                    </div>
+                    <div class="stat-info">
+                        <h3 id="total-subjects">0</h3>
+                        <p>Matérias</p>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon grades">
+                        <i class="fas fa-chart-line"></i>
+                    </div>
+                    <div class="stat-info">
+                        <h3 id="average-grade">0.0</h3>
+                        <p>Média Geral</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="tabs">
+                <button class="tab-btn active" data-tab="students">Alunos</button>
+                <button class="tab-btn" data-tab="teachers">Professores</button>
+                <button class="tab-btn" data-tab="subjects">Matérias</button>
+                <button class="tab-btn" data-tab="grades">Notas</button>
+            </div>
+
+            <!-- Formulários -->
+            <div class="form-section" id="student-form" style="display: none;">
+                <h2 id="form-student-title">Cadastro de Aluno</h2>
+                <form id="addStudentForm">
+                    <input type="hidden" id="student-id">
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label for="studentName">Nome Completo</label>
+                            <input type="text" id="studentName" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="studentEmail">E-mail</label>
+                            <input type="email" id="studentEmail" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="studentPhone">Telefone</label>
+                            <input type="tel" id="studentPhone">
+                        </div>
+                        <div class="form-group">
+                            <label for="studentBirthdate">Data de Nascimento</label>
+                            <input type="date" id="studentBirthdate">
+                        </div>
+                        <div class="form-group">
+                            <label for="studentCourse">Curso</label>
+                            <input type="text" id="studentCourse">
+                        </div>
+                        <div class="form-group">
+                            <label for="studentPeriod">Período</label>
+                            <select id="studentPeriod">
+                                <option value="manha">Manhã</option>
+                                <option value="tarde">Tarde</option>
+                                <option value="noite">Noite</option>
+                            </select>
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Salvar Aluno</button>
+                    <button type="button" class="btn btn-outline" style="color: var(--dark); border-color: var(--dark);" onclick="hideForm('student-form')">Cancelar</button>
+                </form>
+            </div>
+
+            <div class="form-section" id="teacher-form" style="display: none;">
+                <h2 id="form-teacher-title">Cadastro de Professor</h2>
+                <form id="addTeacherForm">
+                    <input type="hidden" id="teacher-id">
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label for="teacherName">Nome Completo</label>
+                            <input type="text" id="teacherName" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="teacherEmail">E-mail</label>
+                            <input type="email" id="teacherEmail" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="teacherPhone">Telefone</label>
+                            <input type="tel" id="teacherPhone">
+                        </div>
+                        <div class="form-group">
+                            <label for="teacherSpecialty">Especialidade</label>
+                            <input type="text" id="teacherSpecialty">
+                        </div>
+                        <div class="form-group">
+                            <label for="teacherEducation">Formação</label>
+                            <input type="text" id="teacherEducation">
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Salvar Professor</button>
+                    <button type="button" class="btn btn-outline" style="color: var(--dark); border-color: var(--dark);" onclick="hideForm('teacher-form')">Cancelar</button>
+                </form>
+            </div>
+
+            <div class="form-section" id="subject-form" style="display: none;">
+                <h2 id="form-subject-title">Cadastro de Matéria</h2>
+                <form id="addSubjectForm">
+                    <input type="hidden" id="subject-id">
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label for="subjectName">Nome da Matéria</label>
+                            <input type="text" id="subjectName" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="subjectCode">Código</label>
+                            <input type="text" id="subjectCode">
+                        </div>
+                        <div class="form-group">
+                            <label for="subjectWorkload">Carga Horária</label>
+                            <input type="number" id="subjectWorkload">
+                        </div>
+                        <div class="form-group">
+                            <label for="subjectTeacher">Professor</label>
+                            <select id="subjectTeacher">
+                                <option value="">Selecione um professor</option>
+                            </select>
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Salvar Matéria</button>
+                    <button type="button" class="btn btn-outline" style="color: var(--dark); border-color: var(--dark);" onclick="hideForm('subject-form')">Cancelar</button>
+                </form>
+            </div>
+
+            <!-- Conteúdo das Abas -->
+            <div class="tab-content active" id="students-tab">
+                <div class="form-section">
+                    <h2>Alunos Cadastrados</h2>
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Nome</th>
+                                <th>E-mail</th>
+                                <th>Curso</th>
+                                <th>Período</th>
+                                <th>Ações</th>
+                            </tr>
+                        </thead>
+                        <tbody id="students-table-body">
+                            <!-- Conteúdo dinâmico -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="tab-content" id="teachers-tab">
+                <div class="form-section">
+                    <h2>Professores Cadastrados</h2>
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Nome</th>
+                                <th>E-mail</th>
+                                <th>Especialidade</th>
+                                <th>Ações</th>
+                            </tr>
+                        </thead>
+                        <tbody id="teachers-table-body">
+                            <!-- Conteúdo dinâmico -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="tab-content" id="subjects-tab">
+                <div class="form-section">
+                    <h2>Matérias Cadastradas</h2>
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Nome</th>
+                                <th>Código</th>
+                                <th>Carga Horária</th>
+                                <th>Professor</th>
+                                <th>Ações</th>
+                            </tr>
+                        </thead>
+                        <tbody id="subjects-table-body">
+                            <!-- Conteúdo dinâmico -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="tab-content" id="grades-tab">
+                <div class="form-section">
+                    <h2>Lançamento de Notas</h2>
+                    <form id="grade-form">
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label for="gradeStudent">Aluno</label>
+                                <select id="gradeStudent" required>
+                                    <option value="">Selecione um aluno</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="gradeSubject">Matéria</label>
+                                <select id="gradeSubject" required>
+                                    <option value="">Selecione uma matéria</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="gradeValue">Nota</label>
+                                <input type="number" id="gradeValue" min="0" max="10" step="0.1" required>
+                            </div>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Lançar Nota</button>
+                    </form>
+                </div>
+
+                <div class="form-section">
+                    <h2>Notas Lançadas</h2>
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Aluno</th>
+                                <th>Matéria</th>
+                                <th>Nota</th>
+                                <th>Data</th>
+                                <th>Ações</th>
+                            </tr>
+                        </thead>
+                        <tbody id="grades-table-body">
+                            <!-- Conteúdo dinâmico -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <!-- Área de Professores (inicialmente oculta) -->
+        <section id="teacher-area" style="display: none;">
+            <div class="dashboard-header">
+                <h2>Área do Professor</h2>
+            </div>
+
+            <div class="stats">
+                <div class="stat-card">
+                    <div class="stat-icon students">
+                        <i class="fas fa-user-graduate"></i>
+                    </div>
+                    <div class="stat-info">
+                        <h3 id="teacher-total-students">0</h3>
+                        <p>Meus Alunos</p>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon subjects">
+                        <i class="fas fa-book"></i>
+                    </div>
+                    <div class="stat-info">
+                        <h3 id="teacher-total-subjects">0</h3>
+                        <p>Matérias Ministradas</p>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon grades">
+                        <i class="fas fa-chart-line"></i>
+                    </div>
+                    <div class="stat-info">
+                        <h3 id="teacher-average-grade">0.0</h3>
+                        <p>Média da Turma</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-section">
+                <h2>Minhas Matérias</h2>
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Nome</th>
+                            <th>Código</th>
+                            <th>Carga Horária</th>
+                        </tr>
+                    </thead>
+                    <tbody id="teacher-subjects-table-body">
+                        <!-- Conteúdo dinâmico -->
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="form-section">
+                <h2>Meus Alunos</h2>
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Nome</th>
+                            <th>E-mail</th>
+                            <th>Curso</th>
+                            <th>Nota Média</th>
+                        </tr>
+                    </thead>
+                    <tbody id="teacher-students-table-body">
+                        <!-- Conteúdo dinâmico -->
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- Acesso Negado -->
+        <section id="access-denied" class="access-denied" style="display: none;">
+            <i class="fas fa-ban"></i>
+            <h2>Acesso Restrito</h2>
+            <p>Você não tem permissão para acessar esta área.</p>
+            <p>Entre em contato com o administrador do sistema.</p>
+            <button class="btn btn-primary" onclick="goHome()">Voltar para o Início</button>
+        </section>
+
+        <!-- Login Form (inicialmente oculto) -->
+        <div class="login-container" id="login-form" style="display: none;">
+            <h2>Login</h2>
+            <form id="loginForm">
+                <div class="form-group">
+                    <label for="email">E-mail</label>
+                    <input type="email" id="email" required>
+                </div>
+                <div class="form-group">
+                    <label for="password">Senha</label>
+                    <input type="password" id="password" required>
+                </div>
+                <div class="form-group">
+                    <label for="userType">Tipo de Usuário</label>
+                    <select id="userType" required>
+                        <option value="">Selecione...</option>
+                        <option value="admin">Administrador</option>
+                        <option value="teacher">Professor</option>
+                        <option value="student">Aluno</option>
+                    </select>
+                </div>
+                <button type="submit" class="btn btn-primary" style="width: 100%;">Entrar</button>
+            </form>
+            <p style="text-align: center; margin-top: 1rem;">
+                Não tem uma conta? <a href="#" onclick="showRegister()">Registre-se</a>
+            </p>
+        </div>
+
+        <!-- Register Form (inicialmente oculto) -->
+        <div class="login-container" id="register-form" style="display: none;">
+            <h2>Registrar</h2>
+            <form id="registerForm">
+                <div class="form-group">
+                    <label for="regName">Nome Completo</label>
+                    <input type="text" id="regName" required>
+                </div>
+                <div class="form-group">
+                    <label for="regEmail">E-mail</label>
+                    <input type="email" id="regEmail" required>
+                </div>
+                <div class="form-group">
+                    <label for="regPassword">Senha</label>
+                    <input type="password" id="regPassword" required>
+                </div>
+                <div class="form-group">
+                    <label for="regUserType">Tipo de Usuário</label>
+                    <select id="regUserType" required>
+                        <option value="">Selecione...</option>
+                        <option value="admin">Administrador</option>
+                        <option value="teacher">Professor</option>
+                        <option value="student">Aluno</option>
+                    </select>
+                </div>
+                <button type="submit" class="btn btn-primary" style="width: 100%;">Registrar</button>
+            </form>
+            <p style="text-align: center; margin-top: 1rem;">
+                Já tem uma conta? <a href="#" onclick="showLogin()">Faça login</a>
+            </p>
+        </div>
+    </main>
+
+    <footer>
+        <div class="container footer-content">
+            <div class="footer-section">
+                <h3>StudyHub</h3>
+                <p>Sistema moderno de gestão de estudos e acompanhamento acadêmico.</p>
+            </div>
+            <div class="footer-section">
+                <h3>Links Rápidos</h3>
+                <a href="#" onclick="showPage('home')">Início</a>
+                <a href="#" onclick="showPage('features')">Funcionalidades</a>
+                <a href="#" onclick="showPage('about')">Sobre</a>
+                <a href="#" onclick="showPage('contact')">Contato</a>
+            </div>
+            <div class="footer-section">
+                <h3>Contato</h3>
+                <p><i class="fas fa-envelope"></i> contato@studyhub.com</p>
+                <p><i class="fas fa-phone"></i> (11) 9999-8888</p>
+                <p><i class="fas fa-map-marker-alt"></i> São Paulo, SP</p>
+            </div>
+        </div>
+        <div class="container copyright">
+            <p>&copy; 2023 StudyHub - Todos os direitos reservados.</p>
+        </div>
+    </footer>
+
+    <script>
+        // Estado da aplicação
+        const state = {
+            currentUser: null,
+            isLoggedIn: false,
+            userType: null,
+            editingId: null
+        };
+
+        // Dados iniciais
+        const initializeData = () => {
+            if (!localStorage.getItem('students')) {
+                localStorage.setItem('students', JSON.stringify([
+                    { id: 1, name: 'Ana Silva', email: 'ana.silva@email.com', phone: '(11) 9999-1111', birthdate: '2000-05-15', course: 'Engenharia', period: 'manha' },
+                    { id: 2, name: 'Carlos Oliveira', email: 'carlos.oliveira@email.com', phone: '(11) 9999-2222', birthdate: '1999-08-22', course: 'Administração', period: 'noite' },
+                    { id: 3, name: 'Mariana Santos', email: 'mariana.santos@email.com', phone: '(11) 9999-3333', birthdate: '2001-02-10', course: 'Direito', period: 'tarde' }
+                ]));
+            }
+
+            if (!localStorage.getItem('teachers')) {
+                localStorage.setItem('teachers', JSON.stringify([
+                    { id: 1, name: 'Prof. Roberto Almeida', email: 'roberto.almeida@email.com', phone: '(11) 9888-1111', specialty: 'Matemática', education: 'Doutorado em Matemática' },
+                    { id: 2, name: 'Profa. Carla Mendes', email: 'carla.mendes@email.com', phone: '(11) 9888-2222', specialty: 'Literatura', education: 'Mestrado em Letras' }
+                ]));
+            }
+
+            if (!localStorage.getItem('subjects')) {
+                localStorage.setItem('subjects', JSON.stringify([
+                    { id: 1, name: 'Cálculo I', code: 'CALC1', workload: 60, teacherId: 1 },
+                    { id: 2, name: 'Literatura Brasileira', code: 'LITBR', workload: 40, teacherId: 2 }
+                ]));
+            }
+
+            if (!localStorage.getItem('grades')) {
+                localStorage.setItem('grades', JSON.stringify([
+                    { id: 1, studentId: 1, subjectId: 1, value: 9.2, date: '2023-06-15' },
+                    { id: 2, studentId: 2, subjectId: 1, value: 7.5, date: '2023-06-15' },
+                    { id: 3, studentId: 3, subjectId: 2, value: 8.8, date: '2023-06-10' }
+                ]));
+            }
+
+            if (!localStorage.getItem('users')) {
+                localStorage.setItem('users', JSON.stringify([
+                    { id: 1, name: 'Administrador', email: 'admin@studyhub.com', password: 'admin123', type: 'admin' },
+                    { id: 2, name: 'Prof. Roberto Almeida', email: 'roberto@email.com', password: 'prof123', type: 'teacher' },
+                    { id: 3, name: 'Ana Silva', email: 'ana@email.com', password: 'aluno123', type: 'student' }
+                ]));
+            }
+        };
+
+        // Funções para controle de exibição
+        function showPage(page) {
+            // Oculta todas as páginas
+            document.querySelectorAll('main > section').forEach(section => {
+                section.style.display = 'none';
+            });
+            
+            // Mostra a página solicitada
+            if (page === 'home') {
+                document.getElementById('home-page').style.display = 'block';
+            }
+        }
+        
+        function showDashboard() {
+            if (!state.isLoggedIn) {
+                showLogin();
+                return;
+            }
+            
+            hideAllPages();
+            updateStatistics();
+            
+            if (state.userType === 'admin') {
+                document.getElementById('dashboard').style.display = 'block';
+                loadStudents();
+                loadTeachers();
+                loadSubjects();
+                loadGrades();
+                populateSelects();
+            } else if (state.userType === 'teacher') {
+                document.getElementById('teacher-area').style.display = 'block';
+                loadTeacherData();
+            } else {
+                document.getElementById('access-denied').style.display = 'block';
+            }
+        }
+        
+        function showLogin() {
+            hideAllPages();
+            document.getElementById('login-form').style.display = 'block';
+            document.getElementById('register-form').style.display = 'none';
+        }
+        
+        function showRegister() {
+            hideAllPages();
+            document.getElementById('login-form').style.display = 'none';
+            document.getElementById('register-form').style.display = 'block';
+        }
+        
+        function showAddForm(type) {
+            state.editingId = null;
+            
+            if (type === 'student') {
+                document.getElementById('form-student-title').textContent = 'Cadastro de Aluno';
+                document.getElementById('student-id').value = '';
+                document.getElementById('studentName').value = '';
+                document.getElementById('studentEmail').value = '';
+                document.getElementById('studentPhone').value = '';
+                document.getElementById('studentBirthdate').value = '';
+                document.getElementById('studentCourse').value = '';
+                document.getElementById('studentPeriod').value = 'manha';
+                document.getElementById('student-form').style.display = 'block';
+            } else if (type === 'teacher') {
+                document.getElementById('form-teacher-title').textContent = 'Cadastro de Professor';
+                document.getElementById('teacher-id').value = '';
+                document.getElementById('teacherName').value = '';
+                document.getElementById('teacherEmail').value = '';
+                document.getElementById('teacherPhone').value = '';
+                document.getElementById('teacherSpecialty').value = '';
+                document.getElementById('teacherEducation').value = '';
+                document.getElementById('teacher-form').style.display = 'block';
+            } else if (type === 'subject') {
+                document.getElementById('form-subject-title').textContent = 'Cadastro de Matéria';
+                document.getElementById('subject-id').value = '';
+                document.getElementById('subjectName').value = '';
+                document.getElementById('subjectCode').value = '';
+                document.getElementById('subjectWorkload').value = '';
+                document.getElementById('subjectTeacher').value = '';
+                populateTeacherSelect();
+                document.getElementById('subject-form').style.display = 'block';
+            }
+        }
+        
+        function hideForm(formId) {
+            document.getElementById(formId).style.display = 'none';
+        }
+        
+        function hideAllPages() {
+            document.getElementById('home-page').style.display = 'none';
+            document.getElementById('dashboard').style.display = 'none';
+            document.getElementById('teacher-area').style.display = 'none';
+            document.getElementById('access-denied').style.display = 'none';
+            document.getElementById('login-form').style.display = 'none';
+            document.getElementById('register-form').style.display = 'none';
+        }
+        
+        function goHome() {
+            hideAllPages();
+            document.getElementById('home-page').style.display = 'block';
+        }
+        
+        function logout() {
+            state.isLoggedIn = false;
+            state.userType = null;
+            state.currentUser = null;
+            state.editingId = null;
+            
+            document.getElementById('auth-buttons').style.display = 'flex';
+            document.getElementById('user-menu').style.display = 'none';
+            document.getElementById('user-name').textContent = '';
+            
+            goHome();
+        }
+        
+        // Funções de manipulação de dados
+        function loadStudents() {
+            const students = JSON.parse(localStorage.getItem('students') || '[]');
+            const tbody = document.getElementById('students-table-body');
+            tbody.innerHTML = '';
+            
+            students.forEach(student => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${student.id}</td>
+                    <td>${student.name}</td>
+                    <td>${student.email}</td>
+                    <td>${student.course}</td>
+                    <td>${student.period}</td>
+                    <td class="action-buttons">
+                        <button class="action-btn edit-btn" onclick="editStudent(${student.id})"><i class="fas fa-edit"></i></button>
+                        <button class="action-btn delete-btn" onclick="deleteStudent(${student.id})"><i class="fas fa-trash"></i></button>
+                    </td>
+                `;
+                tbody.appendChild(row);
+            });
+        }
+        
+        function loadTeachers() {
+            const teachers = JSON.parse(localStorage.getItem('teachers') || '[]');
+            const tbody = document.getElementById('teachers-table-body');
+            tbody.innerHTML = '';
+            
+            teachers.forEach(teacher => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${teacher.id}</td>
+                    <td>${teacher.name}</td>
+                    <td>${teacher.email}</td>
+                    <td>${teacher.specialty}</td>
+                    <td class="action-buttons">
+                        <button class="action-btn edit-btn" onclick="editTeacher(${teacher.id})"><i class="fas fa-edit"></i></button>
+                        <button class="action-btn delete-btn" onclick="deleteTeacher(${teacher.id})"><i class="fas fa-trash"></i></button>
+                    </td>
+                `;
+                tbody.appendChild(row);
+            });
+        }
+        
+        function loadSubjects() {
+            const subjects = JSON.parse(localStorage.getItem('subjects') || '[]');
+            const teachers = JSON.parse(localStorage.getItem('teachers') || '[]');
+            const tbody = document.getElementById('subjects-table-body');
+            tbody.innerHTML = '';
+            
+            subjects.forEach(subject => {
+                const teacher = teachers.find(t => t.id === subject.teacherId);
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${subject.id}</td>
+                    <td>${subject.name}</td>
+                    <td>${subject.code}</td>
+                    <td>${subject.workload}h</td>
+                    <td>${teacher ? teacher.name : 'N/A'}</td>
+                    <td class="action-buttons">
+                        <button class="action-btn edit-btn" onclick="editSubject(${subject.id})"><i class="fas fa-edit"></i></button>
+                        <button class="action-btn delete-btn" onclick="deleteSubject(${subject.id})"><i class="fas fa-trash"></i></button>
+                    </td>
+                `;
+                tbody.appendChild(row);
+            });
+        }
+        
+        function loadGrades() {
+            const grades = JSON.parse(localStorage.getItem('grades') || '[]');
+            const students = JSON.parse(localStorage.getItem('students') || '[]');
+            const subjects = JSON.parse(localStorage.getItem('subjects') || '[]');
+            const tbody = document.getElementById('grades-table-body');
+            tbody.innerHTML = '';
+            
+            grades.forEach(grade => {
+                const student = students.find(s => s.id === grade.studentId);
+                const subject = subjects.find(s => s.id === grade.subjectId);
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${student ? student.name : 'N/A'}</td>
+                    <td>${subject ? subject.name : 'N/A'}</td>
+                    <td>${grade.value}</td>
+                    <td>${grade.date}</td>
+                    <td class="action-buttons">
+                        <button class="action-btn delete-btn" onclick="deleteGrade(${grade.id})"><i class="fas fa-trash"></i></button>
+                    </td>
+                `;
+                tbody.appendChild(row);
+            });
+        }
+        
+        function loadTeacherData() {
+            const currentTeacher = JSON.parse(localStorage.getItem('teachers') || '[]')
+                .find(t => t.email === state.currentUser);
+                
+            if (!currentTeacher) return;
+            
+            const subjects = JSON.parse(localStorage.getItem('subjects') || '[]')
+                .filter(s => s.teacherId === currentTeacher.id);
+                
+            const grades = JSON.parse(localStorage.getItem('grades') || '[]');
+            const students = JSON.parse(localStorage.getItem('students') || '[]');
+            
+            // Calcular alunos únicos
+            const studentIds = [...new Set(grades
+                .filter(g => subjects.some(s => s.id === g.subjectId))
+                .map(g => g.studentId))];
+                
+            const teacherStudents = students.filter(s => studentIds.includes(s.id));
+            
+            // Calcular médias
+            let totalGrade = 0;
+            let gradeCount = 0;
+            
+            grades.forEach(grade => {
+                if (subjects.some(s => s.id === grade.subjectId)) {
+                    totalGrade += grade.value;
+                    gradeCount++;
+                }
+            });
+            
+            const averageGrade = gradeCount > 0 ? (totalGrade / gradeCount).toFixed(1) : '0.0';
+            
+            // Atualizar estatísticas
+            document.getElementById('teacher-total-students').textContent = teacherStudents.length;
+            document.getElementById('teacher-total-subjects').textContent = subjects.length;
+            document.getElementById('teacher-average-grade').textContent = averageGrade;
+            
+            // Carregar matérias
+            const subjectsTbody = document.getElementById('teacher-subjects-table-body');
+            subjectsTbody.innerHTML = '';
+            
+            subjects.forEach(subject => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${subject.name}</td>
+                    <td>${subject.code}</td>
+                    <td>${subject.workload}h</td>
+                `;
+                subjectsTbody.appendChild(row);
+            });
+            
+            // Carregar alunos
+            const studentsTbody = document.getElementById('teacher-students-table-body');
+            studentsTbody.innerHTML = '';
+            
+            teacherStudents.forEach(student => {
+                // Calcular média do aluno
+                let studentTotalGrade = 0;
+                let studentGradeCount = 0;
+                
+                grades.forEach(grade => {
+                    if (grade.studentId === student.id && subjects.some(s => s.id === grade.subjectId)) {
+                        studentTotalGrade += grade.value;
+                        studentGradeCount++;
+                    }
+                });
+                
+                const studentAverage = studentGradeCount > 0 ? (studentTotalGrade / studentGradeCount).toFixed(1) : 'N/A';
+                
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${student.name}</td>
+                    <td>${student.email}</td>
+                    <td>${student.course}</td>
+                    <td>${studentAverage}</td>
+                `;
+                studentsTbody.appendChild(row);
+            });
+        }
+        
+        function updateStatistics() {
+            const students = JSON.parse(localStorage.getItem('students') || '[]');
+            const teachers = JSON.parse(localStorage.getItem('teachers') || '[]');
+            const subjects = JSON.parse(localStorage.getItem('subjects') || '[]');
+            const grades = JSON.parse(localStorage.getItem('grades') || '[]');
+            
+            // Calcular média geral
+            let totalGrade = 0;
+            grades.forEach(grade => {
+                totalGrade += grade.value;
+            });
+            
+            const averageGrade = grades.length > 0 ? (totalGrade / grades.length).toFixed(1) : '0.0';
+            
+            // Atualizar estatísticas
+            document.getElementById('total-students').textContent = students.length;
+            document.getElementById('total-teachers').textContent = teachers.length;
+            document.getElementById('total-subjects').textContent = subjects.length;
+            document.getElementById('average-grade').textContent = averageGrade;
+        }
+        
+        function populateSelects() {
+            populateStudentSelect();
+            populateSubjectSelect();
+            populateTeacherSelect();
+        }
+        
+        function populateStudentSelect() {
+            const students = JSON.parse(localStorage.getItem('students') || '[]');
+            const select = document.getElementById('gradeStudent');
+            select.innerHTML = '<option value="">Selecione um aluno</option>';
+            
+            students.forEach(student => {
+                const option = document.createElement('option');
+                option.value = student.id;
+                option.textContent = student.name;
+                select.appendChild(option);
+            });
+        }
+        
+        function populateSubjectSelect() {
+            const subjects = JSON.parse(localStorage.getItem('subjects') || '[]');
+            const select = document.getElementById('gradeSubject');
+            select.innerHTML = '<option value="">Selecione uma matéria</option>';
+            
+            subjects.forEach(subject => {
+                const option = document.createElement('option');
+                option.value = subject.id;
+                option.textContent = subject.name;
+                select.appendChild(option);
+            });
+        }
+        
+        function populateTeacherSelect() {
+            const teachers = JSON.parse(localStorage.getItem('teachers') || '[]');
+            const select = document.getElementById('subjectTeacher');
+            select.innerHTML = '<option value="">Selecione um professor</option>';
+            
+            teachers.forEach(teacher => {
+                const option = document.createElement('option');
+                option.value = teacher.id;
+                option.textContent = teacher.name;
+                select.appendChild(option);
+            });
+        }
+        
+        // Funções de CRUD
+        function editStudent(id) {
+            const students = JSON.parse(localStorage.getItem('students') || '[]');
+            const student = students.find(s => s.id === id);
+            
+            if (student) {
+                state.editingId = id;
+                document.getElementById('form-student-title').textContent = 'Editar Aluno';
+                document.getElementById('student-id').value = student.id;
+                document.getElementById('studentName').value = student.name;
+                document.getElementById('studentEmail').value = student.email;
+                document.getElementById('studentPhone').value = student.phone || '';
+                document.getElementById('studentBirthdate').value = student.birthdate || '';
+                document.getElementById('studentCourse').value = student.course || '';
+                document.getElementById('studentPeriod').value = student.period || 'manha';
+                document.getElementById('student-form').style.display = 'block';
+            }
+        }
+        
+        function deleteStudent(id) {
+            if (confirm('Tem certeza que deseja excluir este aluno?')) {
+                let students = JSON.parse(localStorage.getItem('students') || '[]');
+                students = students.filter(s => s.id !== id);
+                localStorage.setItem('students', JSON.stringify(students));
+                loadStudents();
+                updateStatistics();
+            }
+        }
+        
+        function editTeacher(id) {
+            const teachers = JSON.parse(localStorage.getItem('teachers') || '[]');
+            const teacher = teachers.find(t => t.id === id);
+            
+            if (teacher) {
+                state.editingId = id;
+                document.getElementById('form-teacher-title').textContent = 'Editar Professor';
+                document.getElementById('teacher-id').value = teacher.id;
+                document.getElementById('teacherName').value = teacher.name;
+                document.getElementById('teacherEmail').value = teacher.email;
+                document.getElementById('teacherPhone').value = teacher.phone || '';
+                document.getElementById('teacherSpecialty').value = teacher.specialty || '';
+                document.getElementById('teacherEducation').value = teacher.education || '';
+                document.getElementById('teacher-form').style.display = 'block';
+            }
+        }
+        
+        function deleteTeacher(id) {
+            if (confirm('Tem certeza que deseja excluir este professor?')) {
+                let teachers = JSON.parse(localStorage.getItem('teachers') || '[]');
+                teachers = teachers.filter(t => t.id !== id);
+                localStorage.setItem('teachers', JSON.stringify(teachers));
+                loadTeachers();
+                updateStatistics();
+            }
+        }
+        
+        function editSubject(id) {
+            const subjects = JSON.parse(localStorage.getItem('subjects') || '[]');
+            const subject = subjects.find(s => s.id === id);
+            
+            if (subject) {
+                state.editingId = id;
+                document.getElementById('form-subject-title').textContent = 'Editar Matéria';
+                document.getElementById('subject-id').value = subject.id;
+                document.getElementById('subjectName').value = subject.name;
+                document.getElementById('subjectCode').value = subject.code || '';
+                document.getElementById('subjectWorkload').value = subject.workload || '';
+                document.getElementById('subjectTeacher').value = subject.teacherId || '';
+                populateTeacherSelect();
+                document.getElementById('subject-form').style.display = 'block';
+            }
+        }
+        
+        function deleteSubject(id) {
+            if (confirm('Tem certeza que deseja excluir esta matéria?')) {
+                let subjects = JSON.parse(localStorage.getItem('subjects') || '[]');
+                subjects = subjects.filter(s => s.id !== id);
+                localStorage.setItem('subjects', JSON.stringify(subjects));
+                loadSubjects();
+                updateStatistics();
+            }
+        }
+        
+        function deleteGrade(id) {
+            if (confirm('Tem certeza que deseja excluir esta nota?')) {
+                let grades = JSON.parse(localStorage.getItem('grades') || '[]');
+                grades = grades.filter(g => g.id !== id);
+                localStorage.setItem('grades', JSON.stringify(grades));
+                loadGrades();
+                updateStatistics();
+            }
+        }
+        
+        // Manipulação do formulário de login
+        document.getElementById('loginForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            const userType = document.getElementById('userType').value;
+            
+            const users = JSON.parse(localStorage.getItem('users') || '[]');
+            const user = users.find(u => u.email === email && u.password === password && u.type === userType);
+            
+            if (user) {
+                state.isLoggedIn = true;
+                state.userType = userType;
+                state.currentUser = email;
+                
+                document.getElementById('auth-buttons').style.display = 'none';
+                document.getElementById('user-menu').style.display = 'block';
+                document.getElementById('user-name').textContent = user.name;
+                
+                showDashboard();
+            } else {
+                alert('Credenciais inválidas. Por favor, tente novamente.');
+            }
+        });
+        
+        // Manipulação do formulário de registro
+        document.getElementById('registerForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const name = document.getElementById('regName').value;
+            const email = document.getElementById('regEmail').value;
+            const password = document.getElementById('regPassword').value;
+            const userType = document.getElementById('regUserType').value;
+            
+            const users = JSON.parse(localStorage.getItem('users') || '[]');
+            
+            // Verificar se o e-mail já existe
+            if (users.some(u => u.email === email)) {
+                alert('Este e-mail já está cadastrado. Por favor, use outro e-mail.');
+                return;
+            }
+            
+            // Gerar ID único
+            const newId = users.length > 0 ? Math.max(...users.map(u => u.id)) + 1 : 1;
+            
+            // Adicionar novo usuário
+            users.push({
+                id: newId,
+                name,
+                email,
+                password,
+                type: userType
+            });
+            
+            localStorage.setItem('users', JSON.stringify(users));
+            
+            alert('Registro realizado com sucesso! Faça login para continuar.');
+            showLogin();
+        });
+        
+        // Manipulação do formulário de aluno
+        document.getElementById('addStudentForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const id = document.getElementById('student-id').value;
+            const name = document.getElementById('studentName').value;
+            const email = document.getElementById('studentEmail').value;
+            const phone = document.getElementById('studentPhone').value;
+            const birthdate = document.getElementById('studentBirthdate').value;
+            const course = document.getElementById('studentCourse').value;
+            const period = document.getElementById('studentPeriod').value;
+            
+            let students = JSON.parse(localStorage.getItem('students') || '[]');
+            
+            if (id) {
+                // Editar aluno existente
+                const index = students.findIndex(s => s.id === parseInt(id));
+                if (index !== -1) {
+                    students[index] = {
+                        id: parseInt(id),
+                        name,
+                        email,
+                        phone,
+                        birthdate,
+                        course,
+                        period
+                    };
+                }
+            } else {
+                // Adicionar novo aluno
+                const newId = students.length > 0 ? Math.max(...students.map(s => s.id)) + 1 : 1;
+                
+                students.push({
+                    id: newId,
+                    name,
+                    email,
+                    phone,
+                    birthdate,
+                    course,
+                    period
+                });
+            }
+            
+            localStorage.setItem('students', JSON.stringify(students));
+            alert('Aluno salvo com sucesso!');
+            hideForm('student-form');
+            loadStudents();
+            updateStatistics();
+            populateStudentSelect();
+        });
+        
+        // Manipulação do formulário de professor
+        document.getElementById('addTeacherForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const id = document.getElementById('teacher-id').value;
+            const name = document.getElementById('teacherName').value;
+            const email = document.getElementById('teacherEmail').value;
+            const phone = document.getElementById('teacherPhone').value;
+            const specialty = document.getElementById('teacherSpecialty').value;
+            const education = document.getElementById('teacherEducation').value;
+            
+            let teachers = JSON.parse(localStorage.getItem('teachers') || '[]');
+            
+            if (id) {
+                // Editar professor existente
+                const index = teachers.findIndex(t => t.id === parseInt(id));
+                if (index !== -1) {
+                    teachers[index] = {
+                        id: parseInt(id),
+                        name,
+                        email,
+                        phone,
+                        specialty,
+                        education
+                    };
+                }
+            } else {
+                // Adicionar novo professor
+                const newId = teachers.length > 0 ? Math.max(...teachers.map(t => t.id)) + 1 : 1;
+                
+                teachers.push({
+                    id: newId,
+                    name,
+                    email,
+                    phone,
+                    specialty,
+                    education
+                });
+            }
+            
+            localStorage.setItem('teachers', JSON.stringify(teachers));
+            alert('Professor salvo com sucesso!');
+            hideForm('teacher-form');
+            loadTeachers();
+            updateStatistics();
+            populateTeacherSelect();
+        });
+        
+        // Manipulação do formulário de matéria
+        document.getElementById('addSubjectForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const id = document.getElementById('subject-id').value;
+            const name = document.getElementById('subjectName').value;
+            const code = document.getElementById('subjectCode').value;
+            const workload = document.getElementById('subjectWorkload').value;
+            const teacherId = document.getElementById('subjectTeacher').value;
+            
+            let subjects = JSON.parse(localStorage.getItem('subjects') || '[]');
+            
+            if (id) {
+                // Editar matéria existente
+                const index = subjects.findIndex(s => s.id === parseInt(id));
+                if (index !== -1) {
+                    subjects[index] = {
+                        id: parseInt(id),
+                        name,
+                        code,
+                        workload: parseInt(workload),
+                        teacherId: parseInt(teacherId)
+                    };
+                }
+            } else {
+                // Adicionar nova matéria
+                const newId = subjects.length > 0 ? Math.max(...subjects.map(s => s.id)) + 1 : 1;
+                
+                subjects.push({
+                    id: newId,
+                    name,
+                    code,
+                    workload: parseInt(workload),
+                    teacherId: parseInt(teacherId)
+                });
+            }
+            
+            localStorage.setItem('subjects', JSON.stringify(subjects));
+            alert('Matéria salva com sucesso!');
+            hideForm('subject-form');
+            loadSubjects();
+            updateStatistics();
+            populateSubjectSelect();
+        });
+        
+        // Manipulação do formulário de notas
+        document.getElementById('grade-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const studentId = document.getElementById('gradeStudent').value;
+            const subjectId = document.getElementById('gradeSubject').value;
+            const value = document.getElementById('gradeValue').value;
+            
+            if (!studentId || !subjectId || !value) {
+                alert('Por favor, preencha todos os campos.');
+                return;
+            }
+            
+            let grades = JSON.parse(localStorage.getItem('grades') || '[]');
+            
+            // Adicionar nova nota
+            const newId = grades.length > 0 ? Math.max(...grades.map(g => g.id)) + 1 : 1;
+            const today = new Date().toISOString().split('T')[0];
+            
+            grades.push({
+                id: newId,
+                studentId: parseInt(studentId),
+                subjectId: parseInt(subjectId),
+                value: parseFloat(value),
+                date: today
+            });
+            
+            localStorage.setItem('grades', JSON.stringify(grades));
+            alert('Nota lançada com sucesso!');
+            document.getElementById('grade-form').reset();
+            loadGrades();
+            updateStatistics();
+        });
+        
+        // Configuração de abas
+        document.querySelectorAll('.tab-btn').forEach(button => {
+            button.addEventListener('click', function() {
+                // Remover classe active de todos os botões
+                document.querySelectorAll('.tab-btn').forEach(btn => {
+                    btn.classList.remove('active');
+                });
+                
+                // Adicionar classe active ao botão clicado
+                this.classList.add('active');
+                
+                // Esconder todos os conteúdos de abas
+                document.querySelectorAll('.tab-content').forEach(content => {
+                    content.classList.remove('active');
+                });
+                
+                // Mostrar o conteúdo da aba correspondente
+                const tabId = this.getAttribute('data-tab');
+                document.getElementById(`${tabId}-tab`).classList.add('active');
+            });
+        });
+        
+        // Configuração de navegação
+        document.querySelectorAll('.nav-link').forEach(link => {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                const page = this.getAttribute('data-page');
+                showPage(page);
+            });
+        });
+        
+        // Inicialização
+        document.addEventListener('DOMContentLoaded', function() {
+            initializeData();
+            goHome();
+        });
+    </script>
+</body>
+</html>
